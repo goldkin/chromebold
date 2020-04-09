@@ -73,7 +73,7 @@ async def on_message(message):
                                                           formatted_message.split(' ')):
                     if response.endswith("_multidata"):
                         multidata_filename = response
-                    elif response.endswith("multisave"):
+                    elif response.endswith("_multisave"):
                         continue
                     else:
                         await message.channel.send(file=discord.File(response))
