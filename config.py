@@ -9,6 +9,15 @@ class PlayerConfig:
     ''' Load template for a new player.
     Neither of these are validated. It's up to the caller to do so.'''
     copy(templatefile, outfile)
+
+  def get_player_setting(playerfile, path):
+    ''' Extract and return a player setting.'''
+    player_dict = load(playerfile)
+    elem = player_dict
+    while '/' in path:
+      next, path = path.split('/', 1)
+      elem = elem[next]
+    return elem[path]
     
   def update_player_setting(playerfile, path, value):
     ''' Update a setting in a given YAML file.'''
