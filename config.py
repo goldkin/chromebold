@@ -2,8 +2,6 @@ from shutil import copy
 from urllib.parse import quote
 from yaml import load, dump, SafeLoader
 
-MAX_ENTRY_LENGTH = 20
-
 class PlayerConfig:
     def create_player_from_template(self, templatefile, outfile):
         ''' Load template for a new player.
