@@ -6,6 +6,9 @@ import asyncio
 import discord
 from dotenv import load_dotenv
 
+from config import PlayerConfig
+
+
 load_dotenv()
 os.chdir('/home/pi/MultiWorld-Utilities/')
 TOKEN = os.getenv('DISCORD_TOKEN')
@@ -64,6 +67,24 @@ async def on_message(message):
         if formatted_message.startswith('player list') or formatted_message.startswith('available players'):
             await message.channel.send("Here's the current list of available players:")
             await message.channel.send(str(AVAILABLE_PLAYERS))
+        elif formatted_message.startswith('config get '):
+            formatted_message = formatted_message.split('config get ', 1)[1]
+            playername, path = formatted_message.split(' ')
+            playername = playername.lower()
+            if playername in AVAILABLE_PLAYERS:
+                playerconfig = PlayerConfig()
+                await message.channel.send(str(playerconfig.get_player_setting('{}.yaml'.format(playername), path)))
+            else:
+                await message.channel.send('Player name must be in list of available players!')
+        elif formatted_message.startswith('config set '):
+            formatted_message = formatted_message.split('config set ', 1)[1]
+            playername, path, value = formatted_message.split(' ')
+            playername = playername.lower()
+            if playername in AVAILABLE_PLAYERS:
+                playerconfig = PlayerConfig()
+                await message.channel.send(str(playerconfig.update_player_setting('{}.yaml'.format(playername), path, value)))
+            else:
+                await message.channel.send('Player name must be in list of available players!')
         elif formatted_message.startswith('roll a seed '):
             formatted_message = formatted_message.split('roll a seed ', 1)[1].lower()
             await message.channel.send("Generating new game. Please wait.")
